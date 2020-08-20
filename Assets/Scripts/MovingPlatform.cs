@@ -9,7 +9,7 @@ public class MovingPlatform : MonoBehaviour
     private Transform _targetA, _targetB;
     private bool _switching = false;
 
-    // Update is called once per frame
+ 
     void FixedUpdate()
     {
         if(_switching == false)
@@ -28,7 +28,6 @@ public class MovingPlatform : MonoBehaviour
         {
             _switching = false;
         }
-
     }
     
     private void OnTriggerEnter(Collider other) 
@@ -38,6 +37,7 @@ public class MovingPlatform : MonoBehaviour
            other.transform.parent = this.transform; 
         }
     }
+
     private void OnTriggerExit(Collider other) 
     {
         if(other.tag == "Player")

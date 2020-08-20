@@ -23,7 +23,6 @@ public class Player : MonoBehaviour
 
 
 
-    // Start is called before the first frame update
     void Start()
     {
         _controller = GetComponent<CharacterController>();
@@ -34,7 +33,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+
     void Update()
     {
             //physics calculations first then update!
@@ -67,11 +66,13 @@ public class Player : MonoBehaviour
         _controller.Move(velocity * Time.deltaTime);
         
     }
+
     public void AddCoins()
     {
         _coins ++;
         _uiManager.UpdateCoinDisplay(_coins);
     }
+    
     public void LoseLife()
     {
         

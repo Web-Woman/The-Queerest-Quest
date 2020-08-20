@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class Collectables : MonoBehaviour
 {
-    
-
-    private void Start() 
-    {
-           
-    }
 
     private void OnTriggerEnter(Collider other) {
         if(other.tag == "Player")
@@ -22,4 +16,5 @@ public class Collectables : MonoBehaviour
             Destroy(this.gameObject); 
         }
     }
+
 }

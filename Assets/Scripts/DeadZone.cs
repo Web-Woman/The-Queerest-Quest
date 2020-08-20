@@ -28,8 +28,8 @@ public class DeadZone : MonoBehaviour
           
            StartCoroutine(CCEnableRoutine(cc));
        }
-
    }
+
    IEnumerator CCEnableRoutine(CharacterController controller)
    {
        yield return new WaitForSeconds(0.5f);
