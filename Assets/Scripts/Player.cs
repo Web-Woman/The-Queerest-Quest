@@ -19,7 +19,12 @@ public class Player : MonoBehaviour
     private UIManager _uiManager;
     [SerializeField]
     private int _lives = 3;
-    
+    [SerializeField]
+    private GameObject _jumpAnim;
+    [SerializeField]
+    private GameObject _walkAnim;
+    [SerializeField]
+    private GameObject _idleAnim;
 
 
 
@@ -27,6 +32,8 @@ public class Player : MonoBehaviour
     {
         _controller = GetComponent<CharacterController>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+
+
         if(_uiManager == null)
         {
             Debug.LogError("The UI manager is null");
@@ -40,6 +47,7 @@ public class Player : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         Vector3 direction = new Vector3(horizontalInput, 0 , 0);
         Vector3 velocity = direction * _speed;
+
         
 
         if(_controller.isGrounded == true)
@@ -48,6 +56,7 @@ public class Player : MonoBehaviour
             {
                 _yVelocity = _jumpHeight;
                 _canDoubleJump = true;
+                StartCoroutine(PlayJumpAnim());
             }
             
         } 
@@ -57,14 +66,15 @@ public class Player : MonoBehaviour
             {
                 _yVelocity += _jumpHeight;
                 _canDoubleJump = false;
+                StartCoroutine(PlayJumpAnim());
             }
             
             _yVelocity -= _gravity;
+
         }
         velocity.y = _yVelocity;
 
         _controller.Move(velocity * Time.deltaTime);
-        
     }
 
     public void AddCoins()
@@ -84,5 +94,13 @@ public class Player : MonoBehaviour
             SceneManager.LoadScene(0);
         }
     }
-    
+    IEnumerator PlayJumpAnim()
+    {
+        _jumpAnim.SetActive(true);
+        _idleAnim.SetActive(false);
+        yield return new WaitForSeconds(.7f);
+        _jumpAnim.SetActive(false);
+        _idleAnim.SetActive(true);
+
+    }
 }
