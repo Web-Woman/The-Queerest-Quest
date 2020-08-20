@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour
     private UIManager _uiManager;
     [SerializeField]
     private int _lives = 3;
+    
 
 
 
@@ -63,18 +65,26 @@ public class Player : MonoBehaviour
         velocity.y = _yVelocity;
 
         _controller.Move(velocity * Time.deltaTime);
+        
+        LoseLife();
     }
     public void AddCoins()
     {
         _coins ++;
         _uiManager.UpdateCoinDisplay(_coins);
     }
-    // public void LoseLife()
-    // {
-    //     if()
-    //     {
-    //         lives--;
-    //         _uiManager.UpdateLives(lives);  
-    //     }
-    // }
+    public void LoseLife()
+    {
+        if(transform.position.y <= -50)
+        {
+            _lives--;
+            _uiManager.UpdateLives(_lives);
+            transform.position = new Vector3(-6 ,0 ,0);  
+        }
+        if(_lives == 0)
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
+    
 }

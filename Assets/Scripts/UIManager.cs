@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class UIManager : MonoBehaviour
 {
     [SerializeField]
     private Sprite[] _liveSprites;
+    [SerializeField]
+    private Image _livesImg;
     [SerializeField]
     private Text _coinText;
     
