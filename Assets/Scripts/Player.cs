@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     private GameObject _walkAnim;
     [SerializeField]
     private GameObject _idleAnim;
+    
 
 
 
@@ -32,7 +33,7 @@ public class Player : MonoBehaviour
     {
         _controller = GetComponent<CharacterController>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-
+    
 
         if(_uiManager == null)
         {
@@ -98,9 +99,11 @@ public class Player : MonoBehaviour
     {
         _jumpAnim.SetActive(true);
         _idleAnim.SetActive(false);
+     
         yield return new WaitForSeconds(.7f);
         _jumpAnim.SetActive(false);
         _idleAnim.SetActive(true);
+        
 
     }
 }
