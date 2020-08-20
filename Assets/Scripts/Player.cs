@@ -66,7 +66,6 @@ public class Player : MonoBehaviour
 
         _controller.Move(velocity * Time.deltaTime);
         
-        LoseLife();
     }
     public void AddCoins()
     {
@@ -75,12 +74,10 @@ public class Player : MonoBehaviour
     }
     public void LoseLife()
     {
-        if(transform.position.y <= -50)
-        {
-            _lives--;
-            _uiManager.UpdateLives(_lives);
-            transform.position = new Vector3(-6 ,0 ,0);  
-        }
+        
+        _lives--;
+        _uiManager.UpdateLives(_lives);
+
         if(_lives == 0)
         {
             SceneManager.LoadScene(0);
