@@ -19,21 +19,18 @@ public class Player : MonoBehaviour
     private UIManager _uiManager;
     [SerializeField]
     private int _lives = 3;
-    [SerializeField]
-    private GameObject _jumpAnim;
-    [SerializeField]
-    private GameObject _walkAnim;
-    [SerializeField]
-    private GameObject _idleAnim;
-    
-
-
+    private Animator _anim;
+    private bool _isJumping = false;
+    private bool _isWalking = false;
+    private bool _isIdle = true;
+    private SpriteRenderer _playerSprite;
 
     void Start()
     {
         _controller = GetComponent<CharacterController>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-    
+        _anim = GetComponent<Animator>();
+        _playerSprite = GetComponent<SpriteRenderer>();
 
         if(_uiManager == null)
         {
@@ -41,41 +38,44 @@ public class Player : MonoBehaviour
         }
     }
 
-
     void Update()
     {
             //physics calculations first then update!
         float horizontalInput = Input.GetAxis("Horizontal");
         Vector3 direction = new Vector3(horizontalInput, 0 , 0);
         Vector3 velocity = direction * _speed;
-
+        velocity.y = _yVelocity;
         
-
+        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            _anim.SetTrigger("Walk");
+        } else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+        {
+            _anim.ResetTrigger("Walk");
+            Idle();
+        }
         if(_controller.isGrounded == true)
         {
             if(Input.GetKeyDown(KeyCode.Space))
             {
                 _yVelocity = _jumpHeight;
                 _canDoubleJump = true;
-                StartCoroutine(PlayJumpAnim());
+                StartCoroutine(JumpTrigger());
+                Idle();
             }
-            
-        } 
-        else
-        {
-            if(Input.GetKeyDown(KeyCode.Space) && _canDoubleJump == true)
-            {
-                _yVelocity += _jumpHeight;
-                _canDoubleJump = false;
-                StartCoroutine(PlayJumpAnim());
-            }
-            
-            _yVelocity -= _gravity;
-
+                
         }
-        velocity.y = _yVelocity;
-
+        else if(Input.GetKeyDown(KeyCode.Space) && _canDoubleJump == true)
+        {
+            _yVelocity += _jumpHeight;
+            _canDoubleJump = false;
+            StartCoroutine(JumpTrigger());
+            Idle();
+                
+        }     
+        _yVelocity -= _gravity;
         _controller.Move(velocity * Time.deltaTime);
+        SetDirection();
     }
 
     public void AddCoins()
@@ -86,7 +86,6 @@ public class Player : MonoBehaviour
     
     public void LoseLife()
     {
-        
         _lives--;
         _uiManager.UpdateLives(_lives);
 
@@ -95,16 +94,26 @@ public class Player : MonoBehaviour
             SceneManager.LoadScene(0);
         }
     }
-    IEnumerator PlayJumpAnim()
+    IEnumerator JumpTrigger()
     {
-        _jumpAnim.SetActive(true);
-        _idleAnim.SetActive(false);
-     
-        yield return new WaitForSeconds(.7f);
-        _jumpAnim.SetActive(false);
-        _idleAnim.SetActive(true);
-        
-
+        _anim.SetTrigger("Jump");
+        yield return new WaitForSeconds(1f);
+        _anim.ResetTrigger("Jump");
     }
-
+    private void Idle()
+    {
+        _isIdle = true;
+        _anim.SetTrigger("Idle");
+    }
+    private void SetDirection()
+    {
+        if(Input.GetKeyUp(KeyCode.A))
+        {
+            _playerSprite.flipX = true;
+        }
+        if(Input.GetKeyUp(KeyCode.D))
+        {
+           _playerSprite.flipX = false; 
+        }
+    }
 }
