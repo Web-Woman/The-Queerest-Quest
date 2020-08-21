@@ -362,7 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   _gravity: 1
-  _jumpHeight: 10
+  _jumpHeight: 15
   _coins: 0
   _lives: 3
 --- !u!95 &391779605
